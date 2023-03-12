@@ -17,3 +17,5 @@
 作者没什么影响力，希望安装的大佬们帮忙宣传一下（不强迫），thx！
 
 感谢大佬 [SandTripper](https://github.com/SandTripper) 提供 ZOJ 跳题代码！
+
+感谢 [Paperee](https://github.com/paperee) 点 star！
