@@ -18,4 +18,4 @@
 
 感谢大佬 [SandTripper](https://github.com/SandTripper) 提供 ZOJ 跳题代码！
 
-感谢 [Paperee](https://github.com/paperee) 点 star！
+感谢所有点 star 的大佬！
