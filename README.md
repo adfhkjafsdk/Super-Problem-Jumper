@@ -4,7 +4,7 @@
 
 支持在所有网页跳转到题目，支持洛谷、CodeForces、AtCoder、LOJ、UOJ、UVA 等多种题库的题目
 
-目前支持的题库有：洛谷、CodeForces、AtCoder、LOJ、UOJ、POJ、DarkBZOJ、HydroOJ、SPOJ、UVA、HduOJ、URAL（TimusOJ）、ZOJ、AizuOJ、Acwing、SDXOJ 等。
+目前支持的题库有：洛谷、CodeForces、AtCoder、LOJ、UOJ、POJ、DarkBZOJ、HydroOJ、SPOJ、UVA、HduOJ、URAL（TimusOJ）、ZOJ、AizuOJ、Acwing 等。
 
 支持将网页中所有指向原 BZOJ 的链接改为 DarkBZOJ。（未实现）
 
@@ -16,6 +16,6 @@
 
 作者没什么影响力，希望安装的大佬们帮忙宣传一下（不强迫），thx！
 
-感谢大佬 [SandTripper](https://github.com/SandTripper) 提供 ZOJ 跳题代码！
+感谢大佬 [SandTripper](https://githubfast.com/SandTripper) 提供 ZOJ 跳题代码！
 
 感谢所有点 star 的大佬！
