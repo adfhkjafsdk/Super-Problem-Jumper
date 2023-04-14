@@ -16,12 +16,14 @@
 
 |OJ|网址|是否可以跳转|备注|
 |:-:|:-:|:-:|:-:|
-|洛谷|<https://www.luogu.com.cn/>|是| |
-|CodeForces|<https://codeforces.com/>|是| |
-|AtCoder|<https://atcoder.jp/>|是|有 bug|
-|LOJ|<https://loj.ac/>|是| |
-|UOJ|<https://uoj.ac/>|是| |
-|POJ|<https://poj.org/>|是| |
+|洛谷|<https://www.luogu.com.cn/problem/list>|是| |
+|CodeForces|<https://codeforces.com/problemset>|是| |
+|AtCoder|<https://atcoder.jp/contests/>|是|有 bug|
+|LOJ|<https://loj.ac/p>|是| |
+|UOJ|<https://uoj.ac/problems>|是| |
+|POJ|<http://poj.org/problemlist>|是| |
+|BZOJ|<https://hydro.ac/d/bzoj/p/>|是|此为镜像网站，原网站 <http://www.lydsy.com/JudgeOnline/> 已倒闭|
+|未完待续||||
 
 ---
 
