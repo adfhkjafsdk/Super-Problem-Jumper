@@ -6,7 +6,7 @@
 
 题号一般需要带有前缀（如 LG、CF、AT、POJ 等）。
 
-例如：POJ1000 直接双击就可以跳转到 <http://poj.org/problem?id=1000>。
+例如：POJ1000 安装脚本后直接双击就可以跳转到 <http://poj.org/problem?id=1000>。
 
 也可以选中后按快捷键跳转。
 
@@ -16,7 +16,12 @@
 
 |OJ|网址|是否可以跳转|备注|
 |:-:|:-:|:-:|:-:|
-| | | | |
+|洛谷|<https://www.luogu.com.cn/>|是| |
+|CodeForces|<https://codeforces.com/>|是| |
+|AtCoder|<https://atcoder.jp/>|是|有 bug|
+|LOJ|<https://loj.ac/>|是| |
+|UOJ|<https://uoj.ac/>|是| |
+|POJ|<https://poj.org/>|是| |
 
 ---
 
