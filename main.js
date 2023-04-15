@@ -1,20 +1,24 @@
 // ==UserScript==
 // @name         强力 OI/ACM 跳题器 Super Problem Jumper
 // @namespace    http://tampermonkey.net/
-// @version      0.7
+// @version      0.20
 // @description  支持在所有网页跳转到题目，支持洛谷、CodeForces、AtCoder、LOJ、UOJ、UVA 等多种题库的题目
 // @author       0
 // @match        *://*/*
 // @license      MIT
 // @language     zh-cn
+// @language     zh-tw
+// @language     en-us
 // @grant        GM_getValue
 // @grant        GM_setValue
 // @grant        GM_deleteValue
 // @grant        GM_xmlhttpRequest
 // @connect      leetcode.cn
 // ==/UserScript==
+const vjudge="https://vjudge.csgrandeur.cn/";
 const luogu="https://www.luogu.com.cn/problem/",
       cf="https://codeforces.com/problemset/problem/",
+      cfg="https://codeforces.com/gym/",
       at="https://atcoder.jp/contests/",
       poj="http://poj.org/problem?id=",
       loj="https://loj.ac/p/",
@@ -23,9 +27,13 @@ const luogu="https://www.luogu.com.cn/problem/",
       uva="https://onlinejudge.org/",
       spojl="https://www.luogu.com.cn/remoteJudgeRedirect/spoj/",
       uval="https://www.luogu.com.cn/remoteJudgeRedirect/uva/",
+      topc=vjudge+"problem/TopCoder-",
       hydro="https://hydro.ac/p/",
       vijos="https://vijos.org/p/",
-      dbzoj="https://darkbzoj.cc/problem/",
+      lydsy="http://www.lydsy.com/JudgeOnline/problem.php?id=",
+      lydsys="https://www.lydsy.com/JudgeOnline/problem.php?id=",
+      //dbzoj="https://darkbzoj.cc/problem/",
+      dbzoj="https://hydro.ac/d/bzoj/p/",
       ybt="http://ybt.ssoier.cn:8088/problem_show.php?pid=",
       hdu="https://acm.hdu.edu.cn/showproblem.php?pid=",
       ural="https://acm.timus.ru/problem.aspx?space=1&num=",
@@ -33,26 +41,50 @@ const luogu="https://www.luogu.com.cn/problem/",
       acw="https://www.acwing.com/problem/content/",
       aizu="https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=",
       sgu="https://codeforces.com/problemsets/acmsguru/problem/99999/",
+      pjudge="https://pjudge.ac/problem/",
+      infoj="http://119.27.163.117/problem/",
       cdoj="https://vjudge.csgrandeur.cn/problem/UESTC-",
       leet="https://leetcode.cn/problems/",
       ustc="http://acm.ustc.edu.cn/ustcoj/problem.php?id=",
+      sjtu="https://acm.sjtu.edu.cn/OnlineJudge/problem/",
+      qoj="https://qoj.ac/problem/",
+      jsk="https://www.jisuanke.com/problem/",
+      xtl="https://oj.youdao.com/problem/",
       sdx="https://sdxoj.tk/p/";
-var inLuogu;
+var inLuogu,inLuoguUva;
 var prefixPattern=[
     ['P',luogu+'P',4],
     ['B',luogu+'B',4],
     ['U',luogu+'U',4],
     ['T',luogu+'T',4],
+    ['LG',luogu+'P',4],
     ['LGP',luogu+'P',4],
     ['LGB',luogu+'B',4],
     ['LGU',luogu+'U',4],
     ['LGT',luogu+'T',4],
+    ['LGOJ',luogu+'P',4],
+    ['LGOJP',luogu+'P',4],
+    ['LGOJB',luogu+'B',4],
+    ['LGOJU',luogu+'U',4],
+    ['LGOJT',luogu+'T',4],
     ['LUOGU',luogu+'P',4],
     ['LUOGUP',luogu+'P',4],
     ['LUOGUB',luogu+'B',4],
     ['LUOGUU',luogu+'U',4],
     ['LUPGUT',luogu+'T',4],
+    ['洛谷',luogu+'P',4],
+    ['洛谷P',luogu+'P',4],
+    ['洛谷B',luogu+'B',4],
+    ['洛谷U',luogu+'U',4],
+    ['洛谷T',luogu+'T',4],
+    ['谷',luogu+'P',4],
+    ['谷P',luogu+'P',4],
+    ['谷B',luogu+'B',4],
+    ['谷U',luogu+'U',4],
+    ['谷T',luogu+'T',4],
     ['AT',luogu+'AT',3],
+    ['ATC',luogu+'AT',3],
+    ['ATCODER',luogu+'AT',3],
     ['LOJ',loj,1],
     ['LIBRE',loj,1],
     ['LIBREOJ',loj,1],
@@ -60,8 +92,10 @@ var prefixPattern=[
     ['UNIVERSAL',uoj,1],
     ['UNIVERSALOJ',uoj,1],
     ['SP',spojl,1],
+    ['SPOJ',spojl,1],
     //['UVA',uval,3],
     ['UVA',luogu+'UVA',3], //由于 UVA 比较卡，UVA 题号会跳转到洛谷爬取的 UVA 题目，如果需要跳到 UVA 原站只需要取消上一行的注释
+    ['UVAOJ',luogu+'UVA',3], //同上
     ['POJ',poj,4],
     ['BZ',dbzoj,4],
     ['BZOJ',dbzoj,4],
@@ -69,12 +103,20 @@ var prefixPattern=[
     ['HYSBZ',dbzoj,4],
     ['DBZOJ',dbzoj,4],
     ['DARKBZOJ',dbzoj,4],
+    ['TOPCODER',topc,3],
+    ['TOPC',topc,3],
+    ['TOP',topc,3],
     ['HYDRO',hydro+'H',4],
     ['HYDROOJ',hydro+'H',4],
     ['VIJOS',vijos,4],
     ['YBT',ybt,4],
+    ['YIBENTONG',ybt,4],
     ['一本通',ybt,4],
+    ['信息学奥赛一本通',ybt,4],
     ['HDU',hdu,4],
+    ['HDUOJ',hdu,4],
+    ['杭电',hdu,4],
+    ['杭电OJ',hdu,4],
     ['URAL',ural,4],
     ['URALOJ',ural,4],
     ['TIMUS',ural,4],
@@ -85,16 +127,78 @@ var prefixPattern=[
     ['ACWING',acw,1],
     ['USTC',ustc,4],
     ['USTCOJ',ustc,4],
-    ['SGU',sgu,3],
+    ['CDOJ',cdoj,1],
+    ['INFOJ',infoj,1],
+    ['INF',infoj,1],
+    ['IOJ',infoj,1],
+    ['PUBLICJUDGE',pjudge,5],
+    ['PJUDGE',pjudge,5],
+    ['PUBLICJ',pjudge,5],
+    ['PUBLIC',pjudge,5],
+    ['PJ',pjudge,5],
     ['CDOJ',cdoj,1],
     ['UESTC',cdoj,1],
     ['UESTCOJ',cdoj,1],
+    ['SGU',sgu,3],
     ['SGURU',sgu,3],
     ['SGUOJ',sgu,3],
     ['ACMSGURU',sgu,3],
-    ['SDX',sdx+'P',1],
-    ['SDXOJ',sdx+'P',1]
+    ['SJTU',sjtu,4],
+    ['SJTUOJ',sjtu,4],
+    ['上海交通大学',sjtu,4],
+    ['上交大',sjtu,4],
+    ['上海交大',sjtu,4],
+    ['上海交通大学OJ',sjtu,4],
+    ['上交大OJ',sjtu,4],
+    ['上海交大OJ',sjtu,4],
+    ['QOJ',qoj,1],
+    ['JISUANKE',jsk+'T',4],
+    ['JISUANKET',jsk+'T',4],
+    ['JISUANKEA',jsk+'A',4],
+    ['JSK',jsk+'T',4],
+    ['JSKT',jsk+'T',4],
+    ['JSKA',jsk+'A',4],
+    ['JSKOJ',jsk+'T',4],
+    ['JSKOJT',jsk+'T',4],
+    ['JSKOJA',jsk+'A',4],
+    ['计蒜客',jsk+'T',4],
+    ['计蒜客T',jsk+'T',4],
+    ['计蒜客A',jsk+'A',4],
+    ['计蒜客OJ',jsk+'T',4],
+    ['计蒜客OJT',jsk+'T',4],
+    ['计蒜客OJA',jsk+'A',4],
+    ['XTL',xtl,1],
+    ['XTLP',xtl,1],
+    ['XTLOJ',xtl,1],
+    ['XTLOJP',xtl,1],
+    ['小图灵',xtl,1],
+    ['小图灵P',xtl,1],
+    ['小图灵OJ',xtl,1],
+    ['小图灵OJP',xtl,1],
+    ['有道小图灵',xtl,1],
+    ['有道小图灵P',xtl,1],
+    ['有道小图灵OJ',xtl,1],
+    ['有道小图灵OJP',xtl,1]
+    //['SDX',sdx+'P',1],
+    //['SDXOJ',sdx+'P',1]
 ];
+function replaceAll(s,pat,rep){
+    while(1){
+        var prevText=s;
+        s=s.replace(pat,rep);
+        if(prevText==s) break;
+    }
+    return s;
+}
+function _trimAll(s){
+    while(1){
+        var prevText=s;
+        s=s.replace(/[ #\t]/,'');
+        s=s.replace(/\-/,'_');
+        if(prevText==s) break;
+    }
+    return s;
+}
 function trimAll(s){
     while(1){
         var prevText=s;
@@ -109,7 +213,6 @@ function checkLeetCode(){
     var prevTime=GM_getValue('LeetCodeTime');
     if(prevTime!=null&&now-prevTime<=period) return;
     GM_setValue('LeetCodeTime',now);
-    console.log('check leet');
     GM_xmlhttpRequest({
         method:"GET",
         url:'https://leetcode.cn/api/problems/all/',
@@ -119,8 +222,6 @@ function checkLeetCode(){
             var resList=JSON.parse(res.response).stat_status_pairs;
             var idUrl=new Array();
             var probId;
-            console.log(res.response);
-            console.log(resList);
             resList.forEach(function(e){
                 probId=trimAll(e.stat.frontend_question_id);
                 idUrl.push({id:probId,url:String(e.stat.question__title_slug)});
@@ -269,7 +370,6 @@ function getZojProbId(id){
 }
 function getLeetProbId(id){
     var result=null;
-    console.log('getleet %s',id);
     GM_getValue('LeetCodeUrl').forEach(
         function(e){
             if(id==e.id) result=e.url;
@@ -284,10 +384,35 @@ function isNumber(str){
     }
     return true;
 }
+function isAlpha(str){
+    for(var i in str){
+        var ascii=str.codePointAt(i);
+        if(ascii<65||ascii>90) return false;
+    }
+    return true;
+}
 function JumpById(id){
     var found=false,prefLen;
-    var probId,contestId,contestNum;
+    var probId,contestId,contestNum,strUrl;
+    id=id.toUpperCase();
     console.log(id);
+    //console.log(id.match(/AT.*[A-Z1-9]/));
+    id=_trimAll(id);
+    if(id.startsWith('ATCODER')) id='AT'+id.substr(7);
+    if(id.startsWith('ATC')) id='AT'+id.substr(3);
+    if(id.startsWith('AT_')) id='AT'+id.substr(3);
+    if(id.startsWith('AT')&&isNumber(id.substr(2))) return window.open(luogu+'AT'+parseInt(id.substr(2)));
+    if(isAlpha(id[id.length-1])&&id[id.length-2]=='_') id=id.substr(0,id.length-2)+id[id.length-1];
+    if(id.match(/AT.*[A-Z1-9]/)==id){
+        probId=id[id.length-1].toLowerCase();
+        contestId=id.substr(2,id.length-3).toLowerCase();
+        if(contestId.substr(0,3)=='arc'&&parseInt(contestId.substr(3,3))<=34&&probId.match(/[a-z]/)==probId) probId=String(probId.codePointAt(0)-96);
+        strUrl=replaceAll(contestId,'_','-')+'/tasks/'+contestId+'_'+probId+'/';
+        //return window.open(at+contestId+'/tasks/'+contestId+'_'+probId+'/');
+        return window.open(at+strUrl);
+    }
+    id=trimAll(id);
+    console.log('luogu=%s,id=%s',inLuogu,id);
     if(inLuogu&&id.match(/[0-9]{4,}/)==id){
         return window.open(luogu+'P'+id);
     }
@@ -313,13 +438,16 @@ function JumpById(id){
             return window.open(cf+contestId+'/'+probId+'/');
         }
     }
-    console.log(id.match(/AT.*[A-Z1-9]/));
-    if(id.match(/AT.*[A-Z1-9]/)==id){
-        probId=id[id.length-1].toLowerCase();
-        contestId=id.substr(2,id.length-3).toLowerCase();
-        contestNum=contestId.substr(3,3);
-        if(contestId.substr(0,3)=='arc'&&parseInt(contestNum)<=34&&probId.match(/[a-z]/)==probId) probId=String(probId.codePointAt(0)-96);
-        return window.open(at+contestId+'/tasks/'+contestId+'_'+probId+'/');
+    if(id.match(/GYM[0-9]{1,}[A-Z][0-9]?/)==id||id.match(/CFG[0-9]{1,}[A-Z][0-9]?/)==id||id.match(/CFGYM[0-9]{1,}[A-Z][0-9]?/)==id){
+        if(id.startsWith('GYM')||id.startsWith('CFG')) id=id.substr(3);
+        if(id.startsWith('CFGYM')) id=id.substr(5);
+        probId=id[id.length-1];
+        contestId='';
+        if(isNumber(probId)) probId=id.substr(id.length-2);
+        contestId=id.substr(0,id.length-probId.length);
+        if(isNumber(contestId)){
+            return window.open(cfg+contestId+'/problem/'+probId);
+        }
     }
     if(id.match(/A[BRG]C[0-9]{3,}[A-Z1-9]/)==id){
         probId=id[id.length-1].toLowerCase();
@@ -328,11 +456,11 @@ function JumpById(id){
         if(contestId.substr(0,3)=='arc'&&parseInt(contestNum)<=34&&probId.match(/[a-z]/)==probId) probId=String(probId.codePointAt(0)-96);
         return window.open(at+contestId+'/tasks/'+contestId+'_'+probId+'/');
     }
-    if(id.match(/ZOJ[0-9]{4,}/)==id) return window.open(zoj+getZojProbId(parseInt(id.substr(3))));
+    if(id.match(/ZOJ[0-9]{4,}/)==id||id.match(/ZJU[0-9]{4,}/)==id) return window.open(zoj+getZojProbId(parseInt(id.substr(3))));
     if(id.match(/HYDROOJ.*/)==id) return window.open(hydro+id.substr(7));
     if(id.match(/HYDRO.*/)==id) return window.open(hydro+id.substr(5));
-    if(id.match(/SDXOJ.*/)==id) return window.open(sdx+id.substr(5));
-    if(id.match(/SDX.*/)==id) return window.open(sdx+id.substr(3));
+    //if(id.match(/SDXOJ.*/)==id) return window.open(sdx+id.substr(5));
+    //if(id.match(/SDX.*/)==id) return window.open(sdx+id.substr(3));
     if(id.startsWith('LEETCODE')||id.startsWith('LEET')||id.startsWith('LC')||id.startsWith('力扣')){
         if(id.startsWith('LEETCODE')) prefLen=8;
         else if(id.startsWith('LEET')) prefLen=4;
@@ -344,15 +472,53 @@ function JumpById(id){
     }
     return false;
 }
+function JumpBySelection(){
+    var selText=window.getSelection().toString();
+    if(selText==''||selText==null) return;
+    JumpById(selText);
+}
+
 (function(){
     console.log(1);
     'use strict';
     checkLeetCode();
     if(location.href.startsWith('https://www.luogu.com.cn/')) inLuogu=true;
     else inLuogu=false;
+    if(location.href.startsWith('https://www.luogu.com.cn/problem/UVA')) inLuoguUva=true;
+    else inLuoguUva=false;
     document.ondblclick=function(){
-        //alert('dblckicl');
-        var selText=trimAll(window.getSelection().toString().toUpperCase());
-        JumpById(selText);
+        JumpBySelection();
     };
+    document.onreadystatechange=function(){
+        function replaceBzoj(){
+            if(document.readyState!='complete') return;
+            var linksBzoj=document.getElementsByTagName('A');
+            for(var i=0;i<linksBzoj.length;i++){
+                var e=linksBzoj[i];
+                if(e.href.startsWith(lydsy)) e.href=dbzoj+e.href.substr(lydsy.length);
+                if(e.href.startsWith(lydsys)) e.href=dbzoj+e.href.substr(lydsys.length);
+            }
+        }
+        replaceBzoj();
+        setTimeout(
+            replaceBzoj,1000
+        );
+        setTimeout(
+            function(){
+                if(inLuoguUva){
+                    var domInfoRows=document.getElementsByClassName('info-rows');
+                    domInfoRows=domInfoRows[0];
+                    domInfoRows.innerHTML+='<div data-v-8b7f80ba=""><span data-v-8b7f80ba=""><span data-v-52a98731="" data-v-8b7f80ba="">调试</span></span><span data-v-8b7f80ba=""><a data-v-0640126c="" data-v-52a98731="" href="https://www.udebug.com/UVa/'+window.location.href.substr('https://www.luogu.com.cn/problem/UVA'.length)+'" class="color-default" style="text-decoration: none;"><span data-v-52a98731="">uDebug</span></a></span></div>';
+                }
+            },1000
+        );
+    }
+
+    document.addEventListener("keydown",keye=>{
+        if(keye.code=='KeyJ'&&keye.ctrlKey&&keye.shiftKey) JumpBySelection();
+        if(keye.code=='KeyG'&&keye.ctrlKey&&keye.shiftKey) JumpBySelection();
+        if(keye.code=='KeyM'&&keye.ctrlKey&&keye.shiftKey) JumpBySelection();
+        if(keye.code=='KeyV'&&keye.ctrlKey&&keye.shiftKey) JumpBySelection();
+        if(keye.code=='KeyL'&&keye.ctrlKey&&keye.shiftKey) JumpBySelection();
+    });
 })();
