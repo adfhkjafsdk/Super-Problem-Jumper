@@ -24,7 +24,7 @@
 |POJ|<http://poj.org/problemlist>|是| |
 |BZOJ|<https://hydro.ac/d/bzoj/p/>|是|此为镜像网站，原网站 <http://www.lydsy.com/JudgeOnline/> 已倒闭|
 |HydroOJ|<https://hydro.ac/p>|是| |
-|UVA|<https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8>|是|网站不稳定且题号难以对应，跳题使用洛谷爬取题目，见 <https://www.luogu.com.cn/problem/list?type=UVA&page=1>|
+|UVA|<https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8>|是|网站不稳定且题号难以对应，跳题使用洛谷爬取的题目，见 <https://www.luogu.com.cn/problem/list?type=UVA&page=1>|
 |SPOJ|<http://spoj.com/>|是| |
 |未完待续||||
 
