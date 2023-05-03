@@ -29,8 +29,21 @@
 |UVA|<https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8>|是|UVA|UVA100|网站不稳定且题号难以对应，跳题使用洛谷爬取的题目，见 <https://www.luogu.com.cn/problem/list?type=UVA&page=1>|
 |SPOJ|<https://www.spoj.com/problems>|是|SP|SP1||
 |AcWing|<https://www.acwing.com/problem/>|是|AcWing,ACW|Acw1|有 bug|
-|SGU|<https://codeforces.com/problemsets/acmsguru/>|是|SGU,ACMSGURU,SCURU|SGU100||
-|UESTC/CDOJ|<https://vjudge.csgrandeur.cn/problem#OJId=UESTC>|是|UESTC,CDOJ|UESTC1,CDOJ1||
+|SGU|<https://codeforces.com/problemsets/acmsguru/>|是|SGU,ACMSGURU,SGURU,SGUOJ|SGU100||
+|UESTC/CDOJ|<https://vjudge.csgrandeur.cn/problem#OJId=UESTC>|是|UESTC,CDOJ,UESTCOJ|UESTC1,CDOJ1||
+|HDUOJ|<http://acm.hdu.edu.cn/listproblem.php?vol=1>|是|HDU|HDU1000||
+|信息学奥赛一本通在线评测|<http://ybt.ssoier.cn:8088/>|是|YBT|YBT1000||
+|TimusOJ/UralOJ|<https://acm.timus.ru/problemset.aspx>|是|Timus,TimusOJ,Ural,UralOJ|Timus1000||
+|ZOJ|<https://zoj.pintia.cn/problem-sets/91827364500/problems>|是|ZOJ,ZJU1000|ZOJ1000|最近此网站似乎一直 Server Error|
+|AizuOJ|<https://judge.u-aizu.ac.jp/onlinejudge/>|是|Aizu,AizuOJ|Aizu1000||
+|USTCOJ|<http://acm.ustc.edu.cn/ustcoj/problemlist.php>|是|USTC,USTCOJ|USTC1000||
+|InfOJ|<http://119.27.163.117/problems>|是|InfOJ,IOJ,Inf|Inf1||
+|Public Judge|<https://pjudge.ac/problems>|是|PJudge,PublicJudge,PublicJ,Public,PJ|PJudge21603||
+|SJTUOJ|<https://acm.sjtu.edu.cn/OnlineJudge/problem>|是|SJTU,SJTUOJ,上海交通大学OJ|SJTU1000||
+|QOJ|<https://qoj.ac/problems>|是|QOJ|QOJ1||
+|计蒜客|<https://www.jisuanke.com/problems>|是|JSK,JISUANKE,计蒜客,计蒜客OJ|JSK1000||
+|小图灵|<https://oj.youdao.com/problems>|是|XTL,XIAOTULING,小图灵,小图灵OJ|XTL1||
+|SDXOJ|<https://sdxoj.tk/problems>|是|SDX,SDXOJ|SDX1||
 |未完待续|||||
 
 ---
