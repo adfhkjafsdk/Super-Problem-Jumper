@@ -14,20 +14,23 @@
 
 支持或即将支持或曾经支持跳转的 OJ 列表；
 
-|题库|网址|是否可以跳转|前缀/格式|备注|
-|:-:|:-:|:-:|:-:|:-:|
-|洛谷|<https://www.luogu.com.cn/problem/list>|是|P,洛谷，谷，LG，LUOGU ||
-|洛谷入门与面试|<https://www.luogu.com.cn/problem/list>|是|B,洛谷B，LGB ||
-|CodeForces|<https://codeforces.com/problemset>|是|CF||
-|AtCoder|<https://atcoder.jp/contests/>|是|AT/ABC/ARC/AGC|有 bug|
-|LOJ|<https://loj.ac/p>|是|LOJ，Libre,LibreOJ||
-|UOJ|<https://uoj.ac/problems>|是|UOJ,Universal,UniversalOJ| |
-|POJ|<http://poj.org/problemlist>|是|POJ| |
-|BZOJ|<https://hydro.ac/d/bzoj/p/>|是|BZOJ,DarkBZOJ,DBZOJ,Lydsy|此为镜像网站，原网站 <http://www.lydsy.com/JudgeOnline/> 已倒闭|
-|HydroOJ|<https://hydro.ac/p>|是|Hydro,HydroH||
-|UVA|<https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8>|是|UVA|网站不稳定且题号难以对应，跳题使用洛谷爬取的题目，见 <https://www.luogu.com.cn/problem/list?type=UVA&page=1>|
-|SPOJ|<https://www.spoj.com/problems>|是|SP||
-|AcWing|<https://www.acwing.com/problem/>|是|AcWing,ACW|有 bug|
+|题库|网址|是否可以跳转|前缀/格式|举例|备注|
+|:-:|:-:|:-:|:-:|:-:|:-:|
+|洛谷|<https://www.luogu.com.cn/problem/list>|是|P,洛谷，谷，LG，LUOGU|P1001||
+|洛谷入门与面试|<https://www.luogu.com.cn/problem/list>|是|B,洛谷B，LGB|B2001||
+|CodeForces|<https://codeforces.com/problemset>|是|CF|CF1A||
+|AtCoder|<https://atcoder.jp/contests/>|是|AT/ABC/ARC/AGC|ATABC0011,ARC001A|有 bug|
+|LeetCode|<https://leetcode.cn/problemset/all/>|是|LeetCode,LC,Leet|LC1||
+|LOJ|<https://loj.ac/p>|是|LOJ，Libre,LibreOJ|LOJ1||
+|UOJ|<https://uoj.ac/problems>|是|UOJ,Universal,UniversalOJ|UOJ1||
+|POJ|<http://poj.org/problemlist>|是|POJ|POJ1000||
+|BZOJ|<https://hydro.ac/d/bzoj/p/>|是|BZOJ,DarkBZOJ,DBZOJ,Lydsy|BZOJ1000|此为 [HydroOJ](https://hydro.ac/) 建立的镜像网站，原网站 <http://www.lydsy.com/JudgeOnline/> 已倒闭；另一个著名的镜像网站为 <https://darkbzoj.cc/>，但是在一些地区无法访问或访问极慢。|
+|HydroOJ|<https://hydro.ac/p>|是|Hydro,HydroH|HydroH1000,Hydro1000||
+|UVA|<https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8>|是|UVA|UVA100|网站不稳定且题号难以对应，跳题使用洛谷爬取的题目，见 <https://www.luogu.com.cn/problem/list?type=UVA&page=1>|
+|SPOJ|<https://www.spoj.com/problems>|是|SP|SP1||
+|AcWing|<https://www.acwing.com/problem/>|是|AcWing,ACW|Acw1|有 bug|
+|SGU|<https://codeforces.com/problemsets/acmsguru/>|是|SGU,ACMSGURU,SCURU|SGU100||
+|UESTC/CDOJ|<https://vjudge.csgrandeur.cn/problem#OJId=UESTC>|是|UESTC,CDOJ|UESTC1,CDOJ1||
 |未完待续|||||
 
 ---
