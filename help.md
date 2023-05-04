@@ -34,7 +34,7 @@
 |HDUOJ|<http://acm.hdu.edu.cn/listproblem.php?vol=1>|是|HDU|HDU1000||
 |信息学奥赛一本通在线评测|<http://ybt.ssoier.cn:8088/>|是|YBT|YBT1000||
 |TimusOJ/UralOJ|<https://acm.timus.ru/problemset.aspx>|是|Timus,TimusOJ,Ural,UralOJ|Timus1000||
-|ZOJ|<https://zoj.pintia.cn/problem-sets/91827364500/problems>|是|ZOJ,ZJU1000|ZOJ1000|最近此网站似乎一直 Server Error|
+|ZOJ|<https://zoj.pintia.cn/problem-sets/91827364500/problems>|是|ZOJ,ZJU|ZOJ1001|最近此网站似乎一直 Server Error|
 |AizuOJ|<https://judge.u-aizu.ac.jp/onlinejudge/>|是|Aizu,AizuOJ|Aizu1000||
 |USTCOJ|<http://acm.ustc.edu.cn/ustcoj/problemlist.php>|是|USTC,USTCOJ|USTC1000||
 |InfOJ|<http://119.27.163.117/problems>|是|InfOJ,IOJ,Inf|Inf1||
