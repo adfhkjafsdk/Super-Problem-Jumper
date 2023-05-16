@@ -19,6 +19,7 @@
 |洛谷|<https://www.luogu.com.cn/problem/list>|是|P,洛谷，谷，LG，LUOGU|P1001||
 |洛谷入门与面试|<https://www.luogu.com.cn/problem/list?type=B>|是|B,洛谷B，LGB|B2001||
 |CodeForces|<https://codeforces.com/problemset>|是|CF|CF1A||
+|CodeForces Gym|<https://codeforces.com/gyms>|是|Gym,CFG|Gym104071B||
 |AtCoder|<https://atcoder.jp/contests/>|是|AT/ABC/ARC/AGC|ATABC0011,ARC001A|有 bug|
 |LeetCode|<https://leetcode.cn/problemset/all/>|是|LeetCode,LC,Leet|LC1||
 |LOJ|<https://loj.ac/p>|是|LOJ，Libre,LibreOJ|LOJ1||
