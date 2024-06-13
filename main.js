@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         强力 OI/ACM 跳题器 Super Problem Jumper
 // @namespace    http://tampermonkey.net/
-// @version      0.20
+// @version      0.27
 // @description  支持在所有网页跳转到题目，支持洛谷、CodeForces、AtCoder、LOJ、UOJ、UVA 等多种题库的题目
 // @author       0
 // @match        *://*/*
@@ -14,7 +14,13 @@
 // @grant        GM_deleteValue
 // @grant        GM_xmlhttpRequest
 // @connect      leetcode.cn
+// @connect      www.acwing.com
+// @downloadURL https://update.greasyfork.org/scripts/459516/%E5%BC%BA%E5%8A%9B%20OIACM%20%E8%B7%B3%E9%A2%98%E5%99%A8%20Super%20Problem%20Jumper.user.js
+// @updateURL https://update.greasyfork.org/scripts/459516/%E5%BC%BA%E5%8A%9B%20OIACM%20%E8%B7%B3%E9%A2%98%E5%99%A8%20Super%20Problem%20Jumper.meta.js
 // ==/UserScript==
+
+// 反馈、更新等见 https://greasyfork.org/scripts/459516
+
 const vjudge="https://vjudge.csgrandeur.cn/";
 const luogu="https://www.luogu.com.cn/problem/",
       cf="https://codeforces.com/problemset/problem/",
@@ -49,8 +55,7 @@ const luogu="https://www.luogu.com.cn/problem/",
       sjtu="https://acm.sjtu.edu.cn/OnlineJudge/problem/",
       qoj="https://qoj.ac/problem/",
       jsk="https://www.jisuanke.com/problem/",
-      xtl="https://oj.youdao.com/problem/",
-      sdx="https://sdxoj.tk/p/";
+      xtl="https://oj.youdao.com/problem/";
 var inLuogu,inLuoguUva;
 var prefixPattern=[
     ['P',luogu+'P',4],
@@ -123,8 +128,9 @@ var prefixPattern=[
     ['TIMUSOJ',ural,4],
     ['AIZU',aizu,4],
     ['AIZUOJ',aizu,4],
-    ['ACW',acw,1],
-    ['ACWING',acw,1],
+    ['AOJ',aizu,4],
+    //['ACW',acw,1],
+    //['ACWING',acw,1],
     ['USTC',ustc,4],
     ['USTCOJ',ustc,4],
     ['CDOJ',cdoj,1],
@@ -179,8 +185,6 @@ var prefixPattern=[
     ['有道小图灵P',xtl,1],
     ['有道小图灵OJ',xtl,1],
     ['有道小图灵OJP',xtl,1]
-    //['SDX',sdx+'P',1],
-    //['SDXOJ',sdx+'P',1]
 ];
 function replaceAll(s,pat,rep){
     while(1){
@@ -193,7 +197,7 @@ function replaceAll(s,pat,rep){
 function _trimAll(s){
     while(1){
         var prevText=s;
-        s=s.replace(/[ #\t]/,'');
+        s=s.replace(/[ #【】\[\]（）\t\.。\r\n]/,'');
         s=s.replace(/\-/,'_');
         if(prevText==s) break;
     }
@@ -202,16 +206,17 @@ function _trimAll(s){
 function trimAll(s){
     while(1){
         var prevText=s;
-        s=s.replace(/[ _\-#\t]/,'');
+        s=s.replace(/[ 【】\[\]（）_\-#\t\.。\r\n]/,'');
         if(prevText==s) break;
     }
     return s;
 }
 function checkLeetCode(){
-    const period=432000;
+    const period=432000*1000;
     var now=Date.now();
     var prevTime=GM_getValue('LeetCodeTime');
     if(prevTime!=null&&now-prevTime<=period) return;
+    console.log("Recrawing Leetcode.");
     GM_setValue('LeetCodeTime',now);
     GM_xmlhttpRequest({
         method:"GET",
@@ -227,6 +232,29 @@ function checkLeetCode(){
                 idUrl.push({id:probId,url:String(e.stat.question__title_slug)});
             });
             GM_setValue('LeetCodeUrl',idUrl);
+        }
+    });
+}
+function jumpAcwing(id){
+    GM_xmlhttpRequest({
+        method:"GET",
+        url:'https://www.acwing.com/problem/search/1/?search_content='+id,
+        data:'',
+        headers:{ "Content-Type": "application/x-www-form-urlencoded" },
+        onload:function(res){
+            // let tmp=res.responseXML;
+            console.log(res);
+            // console.log(tmp);
+            let doc=res.responseXML;
+            if(doc.querySelector('#acwing_page>div>div>div>div>div.table-responsive>table>tbody').innerText.trim()=='' ||
+               doc.querySelector('#acwing_page>div>div>div>div>div.table-responsive>table>tbody>tr:nth-child(1)>td:nth-child(2)').innerText.trim()!=id){
+                return;
+            }
+            let list=doc.querySelector('#acwing_page>div>div>div>div>div.table-responsive>table>tbody>tr:nth-child(1)>td:nth-child(3)>a').href.split('/');
+            while(list[list.length-1].length==0) list.pop();
+            //console.log('ret=',list[list.length-1]);
+            let url=acw+list[list.length-1]+'/';
+            window.open(url);
         }
     });
 }
@@ -343,24 +371,12 @@ function getZojProbId(id){
     else if(id>=4100&&id<=4137) num=num+2858;
     else if(id<=4155){
         num = [
-            '1204396400962764800',
-            '1204396614847094784',
-            '1204397453355581440',
-            '1204397900954927104',
-            '1204398068576092160',
-            '1204398372579246080',
-            '1204399129474949120',
-            '1204399353501114368',
-            '1204400054855860224',
-            '1204400324847403008',
-            '1204400324964843520',
-            '1204401005234806784',
-            '1204401005415161856',
-            '1204401331107069952',
-            '1204401556479606784',
-            '1204401556576075776',
-            '1204401845685256192',
-            '1384062681451126784',
+            '1204396400962764800','1204396614847094784','1204397453355581440',
+            '1204397900954927104','1204398068576092160','1204398372579246080',
+            '1204399129474949120','1204399353501114368','1204400054855860224',
+            '1204400324847403008','1204400324964843520','1204401005234806784',
+            '1204401005415161856','1204401331107069952','1204401556479606784',
+            '1204401556576075776','1204401845685256192','1384062681451126784',
         ][id-4138];
     }
     else if(id <= 4167) num='13840629802449797'+String((id-4156)+12);
@@ -398,14 +414,14 @@ function JumpById(id){
     console.log(id);
     //console.log(id.match(/AT.*[A-Z1-9]/));
     id=_trimAll(id);
-    if(id.startsWith('ATCODER')) id='AT'+id.substr(7);
-    if(id.startsWith('ATC')) id='AT'+id.substr(3);
-    if(id.startsWith('AT_')) id='AT'+id.substr(3);
+    if(id.startsWith('ATCODER')) id='AT_'+id.substr(7);
+    if(id.startsWith('ATC')) id='AT_'+id.substr(3);
+    // if(id.startsWith('AT_')) id='AT_'+id.substr(3);
     if(id.startsWith('AT')&&isNumber(id.substr(2))) return window.open(luogu+'AT'+parseInt(id.substr(2)));
     if(isAlpha(id[id.length-1])&&id[id.length-2]=='_') id=id.substr(0,id.length-2)+id[id.length-1];
-    if(id.match(/AT.*[A-Z1-9]/)==id){
+    if(id.match(/AT_.*[A-Z1-9]/)==id){
         probId=id[id.length-1].toLowerCase();
-        contestId=id.substr(2,id.length-3).toLowerCase();
+        contestId=id.substr(3,id.length-4).toLowerCase();
         if(contestId.substr(0,3)=='arc'&&parseInt(contestId.substr(3,3))<=34&&probId.match(/[a-z]/)==probId) probId=String(probId.codePointAt(0)-96);
         strUrl=replaceAll(contestId,'_','-')+'/tasks/'+contestId+'_'+probId+'/';
         //return window.open(at+contestId+'/tasks/'+contestId+'_'+probId+'/');
@@ -435,7 +451,9 @@ function JumpById(id){
         if(isNumber(probId)) probId=id.substr(id.length-2);
         contestId=id.substr(2,id.length-2-probId.length);
         if(isNumber(contestId)){
-            return window.open(cf+contestId+'/'+probId+'/');
+            if(inLuogu) return window.open(luogu+"CF"+contestId+probId);
+            else return window.open(cf+contestId+'/'+probId+'/');
+            // return window.open(cf+contestId+'/'+probId+'/');
         }
     }
     if(id.match(/GYM[0-9]{1,}[A-Z][0-9]?/)==id||id.match(/CFG[0-9]{1,}[A-Z][0-9]?/)==id||id.match(/CFGYM[0-9]{1,}[A-Z][0-9]?/)==id){
@@ -456,11 +474,11 @@ function JumpById(id){
         if(contestId.substr(0,3)=='arc'&&parseInt(contestNum)<=34&&probId.match(/[a-z]/)==probId) probId=String(probId.codePointAt(0)-96);
         return window.open(at+contestId+'/tasks/'+contestId+'_'+probId+'/');
     }
+    if(id.match(/ACW[1-9][0-9]*/)){jumpAcwing(id.substr(3));}
+    if(id.match(/ACWING[1-9][0-9]*/)){jumpAcwing(id.substr(6));}
     if(id.match(/ZOJ[0-9]{4,}/)==id||id.match(/ZJU[0-9]{4,}/)==id) return window.open(zoj+getZojProbId(parseInt(id.substr(3))));
     if(id.match(/HYDROOJ.*/)==id) return window.open(hydro+id.substr(7));
     if(id.match(/HYDRO.*/)==id) return window.open(hydro+id.substr(5));
-    //if(id.match(/SDXOJ.*/)==id) return window.open(sdx+id.substr(5));
-    //if(id.match(/SDX.*/)==id) return window.open(sdx+id.substr(3));
     if(id.startsWith('LEETCODE')||id.startsWith('LEET')||id.startsWith('LC')||id.startsWith('力扣')){
         if(id.startsWith('LEETCODE')) prefLen=8;
         else if(id.startsWith('LEET')) prefLen=4;
@@ -472,17 +490,70 @@ function JumpById(id){
     }
     return false;
 }
+function getSelText(){
+    let act=document.activeElement,ret='';
+    if(act===undefined || act===null) return '';
+    if(act.tagName=="INPUT" || act.tagName=="TEXTAREA"){
+        // console.log("is input");
+        ret=act.value.substring(act.selectionStart,act.selectionEnd);
+    }
+    else{
+        ret=window.getSelection().toString();
+    }
+    return ret;
+}
 function JumpBySelection(){
-    var selText=window.getSelection().toString();
+    var selText=getSelText();
     if(selText==''||selText==null) return;
     JumpById(selText);
 }
 
+var inputbox;
+function InitInputBox(){
+    inputbox=document.createElement('INPUT');
+    inputbox.style.setProperty("position","fixed","important");
+    inputbox.style.setProperty("top","0","important");
+    inputbox.style.setProperty("left","0","important");
+    inputbox.style.setProperty("width","100%","important");
+    inputbox.style.setProperty("height","40px","important");
+    inputbox.style.setProperty("background","rgba(0,60,60,0.8)","important");
+    inputbox.style.setProperty("color","#ffffff","important");
+    inputbox.style.fontSize="20px";
+    inputbox.style.fontWeight="550";
+    inputbox.style.display="none";
+    inputbox.style.setProperty("z-index","999999","important");
+    inputbox.style.borderWidth="medium";
+    inputbox.style.borderColor="cyan";
+    // inputbox.style.transform="translateY(-50px)";
+    // inputbox.style.transition="0.1s";
+    inputbox.title="强力 OI/ACM 跳题器 Super Problem Jumper";
+    inputbox.onkeypress=function(event){
+        if(event.which===13){
+            JumpById(this.value);
+        }
+    }
+    // console.log(inputbox);
+    document.body.appendChild(inputbox);
+}
+function ToggleInputBox(){
+    if(inputbox.style.display=="none"){
+    //if(inputbox.style.transform!="translateY(0px)"){
+        inputbox.style.display="block";
+        inputbox.style.transform="translateY(0px)";
+        inputbox.focus();
+    }
+    else{
+        inputbox.style.display="none";
+        inputbox.style.transform="translateY(-50px)";
+    }
+}
+
 (function(){
-    console.log(1);
+    console.log("OI/ACM Problem Jumper is running.");
     'use strict';
     checkLeetCode();
-    if(location.href.startsWith('https://www.luogu.com.cn/')) inLuogu=true;
+    InitInputBox();
+    if(location.href.startsWith('https://www.luogu.com.cn/')||location.href.startsWith('https://www.luogu.com/')) inLuogu=true;
     else inLuogu=false;
     if(location.href.startsWith('https://www.luogu.com.cn/problem/UVA')) inLuoguUva=true;
     else inLuoguUva=false;
@@ -515,10 +586,24 @@ function JumpBySelection(){
     }
 
     document.addEventListener("keydown",keye=>{
+        // console.log(keye);
         if(keye.code=='KeyJ'&&keye.ctrlKey&&keye.shiftKey) JumpBySelection();
-        if(keye.code=='KeyG'&&keye.ctrlKey&&keye.shiftKey) JumpBySelection();
-        if(keye.code=='KeyM'&&keye.ctrlKey&&keye.shiftKey) JumpBySelection();
-        if(keye.code=='KeyV'&&keye.ctrlKey&&keye.shiftKey) JumpBySelection();
-        if(keye.code=='KeyL'&&keye.ctrlKey&&keye.shiftKey) JumpBySelection();
+        else if(keye.code=='KeyJ'&&keye.ctrlKey&&keye.shiftKey&&keye.altKey) JumpBySelection();
+        else if(keye.code=='KeyG'&&keye.ctrlKey&&keye.shiftKey) JumpBySelection();
+        else if(keye.code=='KeyM'&&keye.ctrlKey&&keye.shiftKey) JumpBySelection();
+        else if(keye.code=='KeyV'&&keye.ctrlKey&&keye.shiftKey) JumpBySelection();
+        else if(keye.code=='KeyL'&&keye.ctrlKey&&keye.shiftKey) JumpBySelection();
+        else if(keye.code=='KeyJ'&&keye.ctrlKey&&keye.altKey&&!keye.shiftKey){
+            let sel=getSelText();
+            console.log('sel=',sel);
+            if(sel!=''&&inputbox.style.display=='none'){
+                inputbox.value=sel;
+            }
+            ToggleInputBox();
+        }
+        /*else{
+            console.log(keye.code=='KeyJ',keye.ctrlKey,keye.altKey);
+        }*/
     });
 })();
+
