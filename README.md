@@ -19,3 +19,5 @@
 感谢大佬 [SandTripper](https://githubfast.com/SandTripper) 提供 ZOJ 跳题代码！
 
 感谢所有点 star 的大佬！
+
+[使用帮助](https://github.com/adfhkjafsdk/Super-Problem-Jumper/blob/main/help.md)  
