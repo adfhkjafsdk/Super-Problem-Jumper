@@ -44,7 +44,6 @@
 |QOJ|<https://qoj.ac/problems>|是|QOJ|QOJ1||
 |计蒜客|<https://www.jisuanke.com/problems>|是|JSK,JISUANKE,计蒜客,计蒜客OJ|JSK1000||
 |小图灵|<https://oj.youdao.com/problems>|是|XTL,XIAOTULING,小图灵,小图灵OJ|XTL1||
-|SDXOJ|<https://sdxoj.tk/problems>|是|SDX,SDXOJ|SDX1||
 |未完待续|||||
 
 ---
